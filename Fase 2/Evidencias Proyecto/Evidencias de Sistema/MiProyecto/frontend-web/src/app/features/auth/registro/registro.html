@@ -1,0 +1,49 @@
+<div class="form-contenedor">
+  <img class="auth-brand-mark" src="rollerapp-r.svg" alt="RollerApp" width="56" height="56"><h1>Crear Cuenta</h1>
+
+  <form [formGroup]="form" (ngSubmit)="enviar()">
+    <div class="form-item">
+      <label for="nombre">Nombre</label>
+      <input id="nombre" type="text" formControlName="nombre">
+    </div>
+
+    <div class="form-item">
+      <label for="apellido">Apellido</label>
+      <input id="apellido" type="text" formControlName="apellido">
+    </div>
+
+    <div class="form-item">
+      <label for="correo">Correo Electrónico</label>
+      <input id="correo" type="email" formControlName="correo" placeholder="tu@correo.cl" autocomplete="email" autocapitalize="none" spellcheck="false">
+      @if (form.controls.correo.invalid && form.controls.correo.touched) {
+        <span class="form-error">Ingresa un correo válido.</span>
+      }
+    </div>
+
+    <div class="form-item">
+      <label for="confirmarCorreo">Confirmar correo electrónico</label>
+      <input id="confirmarCorreo" type="email" formControlName="confirmarCorreo" autocomplete="email" autocapitalize="none" spellcheck="false">
+      @if (form.controls.confirmarCorreo.touched && (form.controls.confirmarCorreo.invalid || form.hasError('correoDistinto'))) { <span class="form-error" role="alert">Ingresa el mismo correo válido en ambos campos.</span> }
+    </div>
+    <div class="form-item">
+      <label for="contrasena">Contraseña</label>
+      <div class="password-field"><input id="contrasena" [type]="mostrarContrasena ? 'text' : 'password'" formControlName="contrasena" autocomplete="new-password"><app-password-toggle [visible]="mostrarContrasena" (toggle)="mostrarContrasena = !mostrarContrasena" /></div>
+      @if (form.controls.contrasena.invalid && form.controls.contrasena.touched) {
+        <span class="form-error">Usa al menos 12 caracteres, una mayúscula y un carácter especial (por ejemplo: !, @, #). Máximo 72 bytes; las tildes y emojis ocupan más de un byte.</span>
+      }
+    </div>
+
+    <div class="form-item">
+      <label for="confirmarContrasena">Confirmar contraseña</label>
+      <div class="password-field"><input id="confirmarContrasena" [type]="mostrarConfirmacion ? 'text' : 'password'" formControlName="confirmarContrasena" autocomplete="new-password"><app-password-toggle target="confirmarContrasena" [visible]="mostrarConfirmacion" (toggle)="mostrarConfirmacion = !mostrarConfirmacion" /></div>
+      @if (form.controls.confirmarContrasena.touched && (form.controls.confirmarContrasena.invalid || form.hasError('contrasenaDistinta'))) { <span class="form-error" role="alert">Las contraseñas deben coincidir.</span> }
+    </div>
+    <p class="form-nota-superior">Usa al menos 12 caracteres, una mayúscula y un carácter especial (por ejemplo: !, @, #). Máximo 72 bytes; evita datos personales y contraseñas reutilizadas.</p>
+
+    <button type="submit" class="btn" [disabled]="enviando">
+      {{ enviando ? 'Creando cuenta...' : 'Crear Cuenta' }}
+    </button>
+  </form>
+
+  <p class="form-nota">¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión aquí</a></p>
+</div>

@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Iniciar Sesión</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <img class="auth-brand-mark" src="rollerapp-r.svg" alt="RollerApp" width="56" height="56"><form [formGroup]="form" (ngSubmit)="enviar()">
+    <ion-item>
+      <ion-label position="stacked">Correo Electrónico</ion-label>
+      <ion-input type="email" autocapitalize="none" [spellcheck]="false" formControlName="correo" placeholder="tu@correo.cl"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Contraseña</ion-label>
+      <ion-input id="contrasena" [type]="mostrarContrasena ? 'text' : 'password'" formControlName="contrasena" autocomplete="current-password"><app-password-toggle slot="end" target="contrasena" [visible]="mostrarContrasena" (toggle)="mostrarContrasena = !mostrarContrasena" /></ion-input>
+    </ion-item>
+
+    @if (form.controls.correo.touched && form.controls.correo.invalid) { <p role="alert" style="color:var(--ion-color-danger)">Ingresa un correo válido.</p> }
+    @if (form.controls.contrasena.touched && form.controls.contrasena.invalid) { <p role="alert" style="color:var(--ion-color-danger)">Ingresa tu contraseña.</p> }
+    <ion-button expand="block" type="submit" class="ion-margin-top" [disabled]="enviando">
+      {{ enviando ? 'Ingresando...' : 'Ingresar' }}
+    </ion-button>
+
+    <ion-button expand="block" fill="clear" routerLink="/olvide-contrasena">
+      ¿Olvidaste tu contraseña?
+    </ion-button>
+
+    <ion-button expand="block" fill="outline" routerLink="/registro">
+      Crear Cuenta
+    </ion-button>
+  </form>
+</ion-content>

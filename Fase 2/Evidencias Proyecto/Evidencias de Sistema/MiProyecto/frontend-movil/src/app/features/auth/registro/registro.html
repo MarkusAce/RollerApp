@@ -1,0 +1,22 @@
+<ion-header><ion-toolbar color="primary"><ion-buttons slot="start"><ion-back-button defaultHref="/login"></ion-back-button></ion-buttons><ion-title>Crear cuenta</ion-title></ion-toolbar></ion-header>
+<ion-content class="ion-padding">
+  <p>El registro público crea únicamente cuentas de cliente.</p>
+  <img class="auth-brand-mark" src="rollerapp-r.svg" alt="RollerApp" width="56" height="56"><form [formGroup]="form" (ngSubmit)="enviar()" novalidate>
+    <ion-item><ion-label position="stacked">Nombre</ion-label><ion-input type="text" autocomplete="given-name" formControlName="nombre"></ion-input></ion-item>
+    @if (form.controls.nombre.touched && form.controls.nombre.invalid) { <p role="alert" style="color:var(--ion-color-danger)">Ingresa tu nombre (máximo 100 caracteres).</p> }
+    <ion-item><ion-label position="stacked">Apellido</ion-label><ion-input type="text" autocomplete="family-name" formControlName="apellido"></ion-input></ion-item>
+    @if (form.controls.apellido.touched && form.controls.apellido.invalid) { <p role="alert" style="color:var(--ion-color-danger)">Ingresa tu apellido (máximo 100 caracteres).</p> }
+    <ion-item><ion-label position="stacked">Correo electrónico</ion-label><ion-input type="email" autocapitalize="none" [spellcheck]="false" autocomplete="email" formControlName="correo"></ion-input></ion-item>
+    @if (form.controls.correo.touched && form.controls.correo.invalid) { <p role="alert" style="color:var(--ion-color-danger)">Ingresa un correo electrónico válido.</p> }
+    <ion-item><ion-label position="stacked">Confirmar correo electrónico</ion-label><ion-input type="email" autocomplete="email" autocapitalize="none" [spellcheck]="false" formControlName="confirmarCorreo"></ion-input></ion-item>
+    @if (form.controls.confirmarCorreo.touched && (form.controls.confirmarCorreo.invalid || form.hasError('correoDistinto'))) { <p role="alert" style="color:var(--ion-color-danger)">Ingresa el mismo correo válido en ambos campos.</p> }
+    <ion-item><ion-label position="stacked">Contraseña</ion-label><ion-input id="contrasena" [type]="mostrarContrasena ? 'text' : 'password'" autocomplete="new-password" formControlName="contrasena"><app-password-toggle slot="end" target="contrasena" [visible]="mostrarContrasena" (toggle)="mostrarContrasena = !mostrarContrasena" /></ion-input></ion-item>
+    @if (form.controls.contrasena.touched && form.controls.contrasena.invalid) { <p role="alert" style="color:var(--ion-color-danger)">Usa al menos 12 caracteres, una mayúscula y un carácter especial (por ejemplo: !, @, #). Máximo 72 bytes; las tildes y emojis ocupan más de un byte.</p> }
+    <ion-item><ion-label position="stacked">Confirmar contraseña</ion-label><ion-input id="confirmarContrasena" [type]="mostrarConfirmacion ? 'text' : 'password'" autocomplete="new-password" formControlName="confirmarContrasena"><app-password-toggle slot="end" target="confirmarContrasena" [visible]="mostrarConfirmacion" (toggle)="mostrarConfirmacion = !mostrarConfirmacion" /></ion-input></ion-item>
+    @if (form.controls.confirmarContrasena.touched && (form.controls.confirmarContrasena.invalid || form.hasError('contrasenaDistinta'))) { <p role="alert" style="color:var(--ion-color-danger)">Las contraseñas deben coincidir.</p> }
+    <p>Usa al menos 12 caracteres, una mayúscula y un carácter especial (por ejemplo: !, @, #). Máximo 72 bytes; evita datos personales y contraseñas reutilizadas.</p>
+    @if (error) { <p role="alert" style="color:var(--ion-color-danger)">{{ error }}</p> }
+    @if (exito) { <p role="status" style="color:var(--ion-color-success)">{{ exito }}</p><ion-button expand="block" type="button" (click)="irAlLogin()">Ir a iniciar sesión</ion-button> }
+    @if (!exito) { <ion-button expand="block" type="submit" class="ion-margin-top" [disabled]="enviando">@if (enviando) { <ion-spinner name="crescent"></ion-spinner> } {{ enviando ? 'Creando cuenta...' : 'Crear cuenta' }}</ion-button> }
+  </form>
+</ion-content>
